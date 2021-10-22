@@ -1,52 +1,66 @@
 object_status="";
-
+objects=[];
 
 
 
 function preload(){
-    img=loadImage('dog_cat.jpg');
+    img=loadImage('https://aldf.org/wp-content/uploads/2018/05/lamb-iStock-665494268-16x9-e1559777676675-1200x675.jpg');
 }
 
 
 function setup(){
   canvas=createCanvas(965, 544);
   canvas.position(180, 90);
-
-  objectDetector=ml5.objectDetector("cocosst", modelLoaded);
+  object_detector=ml5.objectDetector("cocossd", modelLoaded);
   document.getElementById("status").innerHTML="Status: Detecting Object";
 }
 
 
 function draw(){
-    image(img, 150,  0, 695, 344);
-    fill("red");
-    text("Dog", 190, 70);
-    noFill();
-    stroke("red");
-    rect(180, 55, 400,250);
+    image(img, 0,  0, 965, 544);
+    // fill("red");
+    // text("Dog", 130,130);
+    // noFill();
+    // stroke("red");
+    // rect(120, 110, 700,400);
 
-    noFill();
-    noStroke();
+    // noFill();
+    // noStroke();
 
-    fill("yellow");
-    text("Cat", 300,90);
-    noFill();
-    stroke("yellow");
-    rect(290 ,70, 300,250);
-    noStroke();
+    // fill("yellow");
+    // text("Cat", 440,150);
+    // noFill();
+    // stroke("yellow");
+    // rect(430 ,130, 400,350);
+    // noStroke();
+
+    if(object_status != ""){
+      for(var i = 0; i < objects.length; i++){
+        document.getElementById("status").innerHTML="Status: Detected Object";
+        fill("red");
+        percent=Math.floor(objects[i].confidence*100);
+        text(objects[i].label+" "+percent+"%", objects[i].x, objects[i].y);
+        noFill();
+        stroke("red");
+        rect(objects[i].x, objects[i].y, objects[i].width, objects[i].height);
+      }   
+    }
 }
+
 
 function modelLoaded(){
-  object_status=true;
-  object_detector.detect(img, gotRuselt);
+    console.log("Model is loaded......");
+    object_status=true;
+    object_detector.detect(img, gotRuselt);
 }
 
 
-function gotRuselt(error,ruselts){
+function gotRuselt(error ,results){
   if(error){
     console.error(error);
   }
   else{
-    console.log(ruselts);
+    console.log(results);
+    objects=results;
   }
 }
