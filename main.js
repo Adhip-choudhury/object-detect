@@ -48,12 +48,7 @@ function draw(){
       for(var i = 0; i < objects.length; i++){
         document.getElementById("status").innerHTML="Status: Detected Object";
         document.getElementById("Number_of_objects").innerHTML="Number of objects detected are: "+objects.length;
-        fill(r,g,b);
-        percent=Math.floor(objects[i].confidence*100);
-        text(objects[i].label+" "+percent+"%", objects[i].x, objects[i].y);
-        noFill();
-        stroke(r,g,b);
-        rect(objects[i].x, objects[i].y, objects[i].width, objects[i].height);
+
       }   
     }
 }
